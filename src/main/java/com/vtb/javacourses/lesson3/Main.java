@@ -1,5 +1,13 @@
 package com.vtb.javacourses.lesson3;
 
+import com.vtb.javacourses.lesson3.obstacles.Obstacle;
+import com.vtb.javacourses.lesson3.obstacles.Track;
+import com.vtb.javacourses.lesson3.obstacles.Wall;
+import com.vtb.javacourses.lesson3.participants.Cat;
+import com.vtb.javacourses.lesson3.participants.Human;
+import com.vtb.javacourses.lesson3.participants.Participant;
+import com.vtb.javacourses.lesson3.participants.Robot;
+
 public class Main {
     public static void main(String[] args) {
 

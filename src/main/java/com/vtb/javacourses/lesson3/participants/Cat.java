@@ -1,21 +1,21 @@
-package com.vtb.javacourses.lesson3;
+package com.vtb.javacourses.lesson3.participants;
 
-public class Human implements Participant {
+public class Cat implements Participant {
     private String name;
     private final Integer maxHeight;
     private final Integer maxLength;
     private boolean isDroppedOut;
 
-    public Human(String name, Integer maxHeight, Integer maxLength) {
+    public Cat(String name, Integer maxHeight, Integer maxLength) {
         this.name = name;
         this.maxHeight = maxHeight;
         this.maxLength = maxLength;
     }
 
-    public Human() {
-        this.maxHeight = 3;
-        this.maxLength = 4;
-        this.name = "DefHuman";
+    public Cat() {
+        this.maxHeight = 2;
+        this.maxLength = 7;
+        this.name = "DefCat";
     }
 
     @Override

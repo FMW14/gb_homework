@@ -1,4 +1,4 @@
-package com.vtb.javacourses.lesson3;
+package com.vtb.javacourses.lesson3.obstacles;
 
 public abstract class Obstacle {
 
