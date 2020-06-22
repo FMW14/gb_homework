@@ -1,5 +1,7 @@
 package com.vtb.javacourses.lesson2;
 
+import java.util.Arrays;
+
 public class Group {
     private String name;
     private Employee[] employees = new Employee[10];
@@ -24,15 +26,17 @@ public class Group {
     }
 
     public void removeAllEmployees() {
-        employees = new Employee[10];
+        Arrays.fill(employees, null);
     }
 
     public void printEmployees() {
-        System.out.println("Group: " + name);
-        for (int i = 0; i < employees.length; i++) {
-            if (employees[i] != null) {
-                System.out.print(i + ". ");
-                employees[i].printInfo();
+        if (employees != null) {
+            System.out.println("Group: " + name);
+            for (int i = 0; i < employees.length; i++) {
+                if (employees[i] != null) {
+                    System.out.print(i + ". ");
+                    employees[i].printInfo();
+                }
             }
         }
     }
