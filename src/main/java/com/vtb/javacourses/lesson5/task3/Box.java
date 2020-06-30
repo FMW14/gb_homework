@@ -7,37 +7,29 @@ public class Box<T extends Fruit> {
     private List<T> fruits = new ArrayList<>();
 
     public float getWeight() {
-        if (fruits.size() > 0) {
+        if (!fruits.isEmpty()) {
             return fruits.size() * fruits.get(0).getWeight();
         } else {
             return 0;
         }
     }
 
-    public boolean compare(Box<?> another) {
-        return this.getWeight() == another.getWeight();
+    public boolean compare(Box<?> another) { //норм сравнение сделать
+        return Math.abs(this.getWeight() - another.getWeight()) < 0.0001;
+
+//        return this.getWeight() == another.getWeight();
     }
 
-    public void shiftFruits(Box<T> newBox) {
-        for (T fruit : fruits) {
-            newBox.addFruit(fruit);
+    public void shiftFruits(Box<T> newBox) { // проверить на себя
+        if (this != newBox){
+            for (T fruit : fruits) {
+                newBox.addFruit(fruit);
+            }
+            this.fruits.clear();
         }
-        this.fruits.clear();
     }
 
     public void addFruit(T newFruit) {
         fruits.add(newFruit);
-    }
-
-
-    public Box() {
-    }
-
-    public List<T> getFruits() {
-        return fruits;
-    }
-
-    public void setFruits(List<T> fruits) {
-        this.fruits = fruits;
     }
 }

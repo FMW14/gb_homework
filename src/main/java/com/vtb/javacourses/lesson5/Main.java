@@ -34,11 +34,10 @@ public class Main {
     }
 
     //Task1
-    public static <T> T[] changeElements(T[] arr, int first, int second) {
-        T temp = arr[first];
+    public static void changeElements(Object[] arr, int first, int second) {
+        Object temp = arr[first];
         arr[first] = arr[second];
         arr[second] = temp;
-        return arr;
     }
 
     //Task2
