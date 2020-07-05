@@ -2,6 +2,7 @@ package com.vtb.javacourses.lesson8;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,6 +16,9 @@ public class Main {
         String resultTask2 = Arrays.stream(getTwoDemensionalStrArray()).flatMap(Arrays::stream).distinct().collect(Collectors.joining(", ", "Unique words from array: ", "."));
         System.out.println(resultTask2);
 
+        //Task3
+        Integer sum = IntStream.rangeClosed(100, 200).filter(i -> i % 2 == 0).sum();
+        System.out.println(sum);
 
 //        System.out.println(Arrays.deepToString(getTwoDemensionalStrArray()));
     }
