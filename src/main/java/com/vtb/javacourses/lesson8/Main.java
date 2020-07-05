@@ -1,14 +1,14 @@
 package com.vtb.javacourses.lesson8;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
-        String str1 = getOneHundredWordStr();
-
         //Task1
+        String str1 = getOneHundredWordStr();
         String resultTask1 = Arrays.stream(str1.split("\\s")).filter(s -> s.length() > 5).collect(Collectors.joining(" ", "Strings with length > 5 symbols: ", ""));
         System.out.println(resultTask1);
 
@@ -17,13 +17,18 @@ public class Main {
         System.out.println(resultTask2);
 
         //Task3
-        Integer sum = IntStream.rangeClosed(100, 200).filter(i -> i % 2 == 0).sum();
-        System.out.println(sum);
+        int sum = IntStream.rangeClosed(100, 200).filter(i -> i % 2 == 0).sum();
+        System.out.println("Sum even numbers 100-200: " + sum);
 
         //Task4
         String[] strings = new String[] {"A", "AA", "AAA", "A"};
         int stringsLengthSum = Arrays.stream(strings).mapToInt(String::length).sum();
         System.out.println("Task 3 result: " + stringsLengthSum);
+
+        //Task5
+        String[] alphWords = new String[] {"apple", "bread", "cheese", "beer"};
+        List<String> alphWordsResult = Arrays.stream(alphWords).sorted().limit(3).collect(Collectors.toList());
+        System.out.println("Task 5 result: " + alphWordsResult);
     }
 
     public static String getOneHundredWordStr() {
