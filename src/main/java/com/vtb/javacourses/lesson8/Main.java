@@ -13,14 +13,17 @@ public class Main {
         System.out.println(resultTask1);
 
         //Task2
-        String resultTask2 = Arrays.stream(getTwoDemensionalStrArray()).flatMap(Arrays::stream).distinct().collect(Collectors.joining(", ", "Unique words from array: ", "."));
+        String resultTask2 = Arrays.stream(getTwoDemensionalStrArray()).flatMap(Arrays::stream).map(String::toLowerCase).distinct().collect(Collectors.joining(", ", "Unique words from array: ", "."));
         System.out.println(resultTask2);
 
         //Task3
         Integer sum = IntStream.rangeClosed(100, 200).filter(i -> i % 2 == 0).sum();
         System.out.println(sum);
 
-//        System.out.println(Arrays.deepToString(getTwoDemensionalStrArray()));
+        //Task4
+        String[] strings = new String[] {"A", "AA", "AAA", "A"};
+        int stringsLengthSum = Arrays.stream(strings).mapToInt(String::length).sum();
+        System.out.println("Task 3 result: " + stringsLengthSum);
     }
 
     public static String getOneHundredWordStr() {
@@ -45,8 +48,8 @@ public class Main {
     public static String[][] getTwoDemensionalStrArray() {
         return new String[][]{
                 new String[]{"A", "B", "C", "D", "E"},
-                new String[]{"C", "D", "E", "F", "G"},
-                new String[]{"A", "C", "E", "F", "D"},
+                new String[]{"c", "D", "E", "F", "G"},
+                new String[]{"a", "C", "E", "F", "D"},
                 new String[]{"H", "I", "E", "P", "L"},
                 new String[]{"R", "W", "F", "J", "G"},
         };
