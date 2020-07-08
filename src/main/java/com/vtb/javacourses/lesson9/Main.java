@@ -5,17 +5,21 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
+    private static final int N = 100_000_000;
+    private static final int THRESHOLD = 100_000;
+    private static int[] data = new int[N];
+
     public static void main(String[] args) {
-        int[] data = new int[100_000_000];
 
         for (int i = 0; i < data.length; i++) {
-            data[i] = ThreadLocalRandom.current().nextInt(0, 100_000);
+            data[i] = ThreadLocalRandom.current().nextInt(0, THRESHOLD);
         }
 
         //Task1
-        //Time  1674ms  1701ms  1643ms
+        //TimeOLD  1674ms  1701ms  1643ms
+        //Time 70ms     66ms    106ms   68ms
         long time = System.currentTimeMillis();
-        DemoRecursiveTask demoRecursiveTask = new DemoRecursiveTask(data);
+        DemoRecursiveTask demoRecursiveTask = new DemoRecursiveTask(data, 0, N);
         int task1Result = ForkJoinPool.commonPool().invoke(demoRecursiveTask);
         System.out.println("max = " + task1Result);
         System.out.println("ForkJoin: " + (System.currentTimeMillis() - time));
@@ -33,7 +37,5 @@ public class Main {
         int task3Result = Arrays.stream(data).parallel().max().getAsInt();
         System.out.println("max = " + task3Result);
         System.out.println("parallel stream: " + (System.currentTimeMillis() - time));
-
-
     }
 }

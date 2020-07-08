@@ -4,26 +4,43 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.RecursiveTask;
-import java.util.stream.IntStream;
 
 public class DemoRecursiveTask extends RecursiveTask<Integer> {
-    private int[] data;
+    private final int[] data;
+    private final int start;
+    private final int end;
 
-    public DemoRecursiveTask(int[] data) {
+    public DemoRecursiveTask(int[] data, int start, int end) {
         this.data = data;
+        this.start = start;
+        this.end = end;
     }
 
-    private List<DemoRecursiveTask> createSubTask() {
+    private List<DemoRecursiveTask> createSubTask(int offset) {
         return new ArrayList<>(Arrays.asList(
-                new DemoRecursiveTask(Arrays.copyOfRange(data, 0, data.length / 2)),
-                new DemoRecursiveTask(Arrays.copyOfRange(data, data.length / 2, data.length))
+                new DemoRecursiveTask(data, start, start + offset),
+                new DemoRecursiveTask(data, start + offset, end)
         ));
+    }
+
+    private int getMaxFromRange(int startIndex, int endIndex) {
+        int maxElement = Integer.MIN_VALUE;
+        for (int i = startIndex; i < endIndex; i++) {
+            if (maxElement < data[i]) {
+                maxElement = data[i];
+            }
+        }
+
+        return maxElement;
     }
 
     @Override
     protected Integer compute() {
-        if (this.data.length > 100_000) {
-            List<DemoRecursiveTask> subtasks = createSubTask();
+        int curLength = end - start;
+
+        int offset = curLength / 2;
+        if (curLength > 100_000) {
+            List<DemoRecursiveTask> subtasks = createSubTask(offset);
 
             for (DemoRecursiveTask subtask : subtasks) {
                 subtask.fork();
@@ -37,7 +54,7 @@ public class DemoRecursiveTask extends RecursiveTask<Integer> {
 
             return result;
         } else {
-            return IntStream.of(data).max().getAsInt();
+            return getMaxFromRange(start, end);
         }
     }
 }
