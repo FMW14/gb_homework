@@ -11,8 +11,6 @@ import java.util.concurrent.CyclicBarrier;
 
 public class Race {
     public static final int COMPETITORS_COUNT = 4;
-    private CountDownLatch startCdl = new CountDownLatch(COMPETITORS_COUNT);
-    private CountDownLatch stopCdl = new CountDownLatch(COMPETITORS_COUNT);
 
     private List<Stage> stages;
 
@@ -28,6 +26,8 @@ public class Race {
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
         Car[] cars = new Car[COMPETITORS_COUNT];
         CyclicBarrier readyCyclicBarrier = new CyclicBarrier(COMPETITORS_COUNT);
+        CountDownLatch startCdl = new CountDownLatch(COMPETITORS_COUNT);
+        CountDownLatch stopCdl = new CountDownLatch(COMPETITORS_COUNT);
 
         for (int i = 0; i < cars.length; i++) {
             cars[i] = new Car(this, 20 + (int) (Math.random() * 10), readyCyclicBarrier, startCdl, stopCdl);

@@ -11,6 +11,8 @@ public class Car implements Runnable {
     private CyclicBarrier readyCyclicBarrier;
     private CountDownLatch startCdl;
     private CountDownLatch stopCdl;
+    private static boolean haveWinner;
+    private static final Object monitor = new Object();
 
     public String getName() {
         return name;
@@ -46,10 +48,14 @@ public class Car implements Runnable {
             race.getStages().get(i).overcome(this);
         }
 
-        stopCdl.countDown();
-        if (stopCdl.getCount() == CARS_COUNT - 1) {
-            System.out.println(this.getName() + " - WIN");
+        synchronized (monitor){
+            if(!haveWinner){
+                haveWinner = true;
+                System.out.println(this.getName() + " - WIN");
+            }
         }
+
+        stopCdl.countDown();
 
     }
 }
