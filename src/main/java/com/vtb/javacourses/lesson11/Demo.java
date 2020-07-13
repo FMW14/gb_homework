@@ -20,7 +20,7 @@ public class Demo {
         System.out.println("m2");
     }
 
-    @Test(priority = 5)
+    @Test(priority = 1)
     public void method5() {
         System.out.println("m5");
     }

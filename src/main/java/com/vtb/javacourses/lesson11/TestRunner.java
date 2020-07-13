@@ -7,7 +7,7 @@ import java.util.*;
 
 public class TestRunner {
     public static void start(Class<?> testClass) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
-        Map<Byte, Method> testMethodMap = new HashMap<>();
+        Map<Byte, List<Method>> testMethodMap = new HashMap<>();
         Method beforeSuiteMethod = null;
         Method afterSuiteMethod = null;
         for (Method m : testClass.getDeclaredMethods()) {
@@ -28,12 +28,19 @@ public class TestRunner {
             }
 
             if (m.isAnnotationPresent(Test.class)) {
-                testMethodMap.put(m.getAnnotation(Test.class).priority(), m);
+                if (m.getAnnotation(Test.class).priority() > 10 || m.getAnnotation(Test.class).priority() < 1) {
+                    throw new RuntimeException("Priority must have a value from 1 to 10");
+                }
+
+                List<Method> methods = testMethodMap.get(m.getAnnotation(Test.class).priority());
+                if (methods == null) {
+                    methods = new ArrayList<>();
+                }
+                methods.add(m);
+
+                testMethodMap.put(m.getAnnotation(Test.class).priority(), methods);
             }
         }
-
-//        Map<Byte, Method> sortedMethod = new TreeMap<>(testMethodMap);
-//        System.out.println(sortedMethod);
 
 //        List<Map.Entry<Byte, Method>> toSort = new ArrayList<>(testMethodMap.entrySet());
 //        toSort.sort(Map.Entry.comparingByKey());
@@ -43,7 +50,7 @@ public class TestRunner {
 
         System.out.println("Test class: " + testClass.getName());
 
-        if (beforeSuiteMethod !=null){
+        if (beforeSuiteMethod != null) {
             System.out.println("---Launching @BeforeSuite method...---");
             beforeSuiteMethod.invoke(obj);
         } else {
@@ -51,17 +58,16 @@ public class TestRunner {
         }
 
         System.out.println("---Launching @Test methods...---");
-        testMethodMap.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(m -> {
-            try {
-                System.out.println("Launch method " + m.getValue().getName() + " with priority = " + m.getKey().toString());
-                m.getValue().invoke(obj);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
+
+        Map<Byte, List<Method>> sortedMethods = new TreeMap<>(testMethodMap);
+        for (Map.Entry<Byte, List<Method>> entry : sortedMethods.entrySet()) {
+            for (Method m : entry.getValue()) {
+                System.out.println("Launch method " +m.getName() + " with priority = " + entry.getKey());
+                m.invoke(obj);
             }
-        });
+        }
 
-
-        if (afterSuiteMethod != null){
+        if (afterSuiteMethod != null) {
             System.out.println("---Launching @AfterSuite method...---");
             afterSuiteMethod.invoke(obj);
         } else {
