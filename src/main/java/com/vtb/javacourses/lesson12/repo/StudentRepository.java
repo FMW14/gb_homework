@@ -5,6 +5,8 @@ import com.vtb.javacourses.lesson12.annotations.DbColumn;
 import com.vtb.javacourses.lesson12.annotations.DbId;
 import com.vtb.javacourses.lesson12.annotations.DbTable;
 import com.vtb.javacourses.lesson12.etities.Student;
+import com.vtb.javacourses.lesson12.exceptions.DbColumnNotFoundException;
+import com.vtb.javacourses.lesson12.exceptions.DbIdNotFoundException;
 import com.vtb.javacourses.lesson12.exceptions.DbTableNotFoundException;
 
 import java.lang.reflect.Field;
@@ -52,11 +54,11 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
 
         //---CHECK FIELDS---
         if (fieldId == null) {
-            throw new RuntimeException(myClass.getName() + " class has not field with annotation @DbId");
+            throw new DbIdNotFoundException(myClass.getName() + " class has not field with annotation @DbId");
         }
 
         if (fields.isEmpty()) {
-            throw new RuntimeException(myClass.getName() + " class has not fields with annotation @DbColumn");
+            throw new DbColumnNotFoundException(myClass.getName() + " class has not fields with annotation @DbColumn");
         }
 
     }
