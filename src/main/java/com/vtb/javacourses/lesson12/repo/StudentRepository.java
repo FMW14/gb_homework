@@ -10,6 +10,7 @@ import com.vtb.javacourses.lesson12.exceptions.DbIdNotFoundException;
 import com.vtb.javacourses.lesson12.exceptions.DbTableNotFoundException;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,6 +19,39 @@ import java.util.List;
 public class StudentRepository<T> extends ReflectionRepository<T> {
     private Class<T> myClass;
     private String tableName;
+    private List<MyDbField> myDbFields = new ArrayList<>();
+
+    class MyDbField{
+        String fieldName;   //maybe redundant
+        Integer fieldIndex; //maybe redundant
+        Field field;
+        Method getMethod;
+        Method setMethod;
+
+        public MyDbField(Field field) {
+            this.field = field;
+            detectMethods(field);
+        }
+
+        public MyDbField(Field field, Integer index) {
+            this.field = field;
+            this.fieldIndex = index;
+            this.fieldName = field.getName(); //maybe redundant
+            detectMethods(field);
+        }
+        private void detectMethods(Field curField){
+            for (Method method: myClass.getDeclaredMethods()){
+                if(method.getName().toLowerCase().contains(curField.getName().toLowerCase())
+                        && method.getName().toLowerCase().contains("get")){
+                    getMethod = method;
+                }
+                if(method.getName().toLowerCase().contains(curField.getName().toLowerCase())
+                        && method.getName().toLowerCase().contains("set")){
+                    setMethod = method;
+                }
+            }
+        }
+    }
 
     public StudentRepository(Class<T> myClass) {
         this.myClass = myClass;
@@ -41,6 +75,7 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
         List<Field> fields = new ArrayList<>();
 
 
+        int i = 1;
         for (Field field : myClass.getDeclaredFields()) {
             if (field.isAnnotationPresent(DbId.class)) {
                 fieldId = field;
@@ -48,7 +83,9 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
 
             if (field.isAnnotationPresent(DbColumn.class)) {
                 fields.add(field);
+                myDbFields.add(new MyDbField(field, i));
             }
+            i++;
         }
 
 
@@ -155,6 +192,7 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
     public T findById(Long id) throws SQLException {
         try (ResultSet rs = DbConnector.getStatement().executeQuery("SELECT * FROM " + tableName + " WHERE id = " + id + ";")) {
             Student student = new Student();
+//            rs.getString(columnlabel);
             student.setId(rs.getLong(1));
             student.setName(rs.getString(2));
             student.setScore(rs.getInt(3));
