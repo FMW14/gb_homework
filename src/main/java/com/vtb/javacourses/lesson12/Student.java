@@ -3,13 +3,13 @@ package com.vtb.javacourses.lesson12;
 @DbTable(name = "student")
 public class Student {
     @DbId
-    Long id;
+    private Long id;
 
     @DbColumn
-    String name;
+    private String name;
 
     @DbColumn
-    Integer score;
+    private Integer score;
 
     public Long getId() {
         return id;
@@ -41,5 +41,14 @@ public class Student {
     }
 
     public Student() {
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", score=" + score +
+                '}';
     }
 }

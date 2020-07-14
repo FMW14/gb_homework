@@ -7,12 +7,12 @@ public abstract class ReflectionRepository<T>{
 
     public abstract void save(T object) throws SQLException, IllegalAccessException;
 
-    public abstract T findById();
+    public abstract T findById(Long id) throws SQLException;
 
-    public abstract List<T> findAll();
+    public abstract List<T> findAll() throws SQLException;
 
-    public abstract void deleteById();
+    public abstract void deleteById(Long id) throws SQLException;
 
-    public abstract void deleteAll();
+    public abstract void deleteAll() throws SQLException;
 
 }
