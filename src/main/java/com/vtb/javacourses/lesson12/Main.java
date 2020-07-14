@@ -6,10 +6,6 @@ import com.vtb.javacourses.lesson12.repo.StudentRepository;
 import java.sql.*;
 
 public class Main {
-    private static Connection connection;
-    private static Statement stmt;
-    private static PreparedStatement psInsert;
-
     public static void main(String[] args) throws SQLException, ClassNotFoundException, IllegalAccessException {
         DbConnector.connect();
         StudentRepository<Student> studentRepository = new StudentRepository<>(Student.class);

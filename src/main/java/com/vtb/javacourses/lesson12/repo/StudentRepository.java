@@ -1,14 +1,13 @@
 package com.vtb.javacourses.lesson12.repo;
 
 import com.vtb.javacourses.lesson12.DbConnector;
-import com.vtb.javacourses.lesson12.etities.Student;
 import com.vtb.javacourses.lesson12.annotations.DbColumn;
 import com.vtb.javacourses.lesson12.annotations.DbId;
 import com.vtb.javacourses.lesson12.annotations.DbTable;
+import com.vtb.javacourses.lesson12.etities.Student;
 import com.vtb.javacourses.lesson12.exceptions.DbTableNotFoundException;
 
 import java.lang.reflect.Field;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -62,7 +61,7 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
 
     }
 
-//    private PreparedStatement prepareInsert(T object) throws SQLException {
+//    private PreparedStatement prepareInsertOld(T object) throws SQLException {
 //        StringBuilder query = new StringBuilder();
 //        StringBuilder queryArguments = new StringBuilder();
 //        query.append("INSERT INTO students (");
@@ -83,24 +82,24 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
 //        return DbConnector.getPreparedStatement(query.toString());
 //    }
 
-    public PreparedStatement prepareInsert(T object) throws SQLException {
-        StringBuilder query = new StringBuilder("INSERT INTO " + tableName + " (");
-        StringBuilder queryValues = new StringBuilder("VALUES (");
-
-        for (Field field : myClass.getDeclaredFields()) {
-            if (field.isAnnotationPresent(DbColumn.class)) {
-                query.append(field.getName());
-                query.append(", ");
-                queryValues.append("?, ");
-            }
-        }
-        query.deleteCharAt(query.length() - 2);
-        query.append(") ");
-        queryValues.deleteCharAt(queryValues.length() - 2);
-        queryValues.append(");");
-        query.append(queryValues);
-        return DbConnector.getPreparedStatement(query.toString());
-    }
+//    public PreparedStatement prepareInsert(T object) throws SQLException {
+//        StringBuilder query = new StringBuilder("INSERT INTO " + tableName + " (");
+//        StringBuilder queryValues = new StringBuilder("VALUES (");
+//
+//        for (Field field : myClass.getDeclaredFields()) {
+//            if (field.isAnnotationPresent(DbColumn.class)) {
+//                query.append(field.getName());
+//                query.append(", ");
+//                queryValues.append("?, ");
+//            }
+//        }
+//        query.deleteCharAt(query.length() - 2);
+//        query.append(") ");
+//        queryValues.deleteCharAt(queryValues.length() - 2);
+//        queryValues.append(");");
+//        query.append(queryValues);
+//        return DbConnector.getPreparedStatement(query.toString());
+//    }
 
     @Override
     public void save(T object) throws SQLException, IllegalAccessException {
@@ -141,7 +140,7 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
 //            }
 //        }
 //        PreparedStatement preparedStatement = prepinss(object);
-//        for (Map.Entry<Integer, Field> entry : objectValues.entrySet()){ // FIXME: 14.07.2020 JOPA
+//        for (Map.Entry<Integer, Field> entry : objectValues.entrySet()){ // FIXME: 14.07.2020
 //            preparedStatement.setString(entry.getKey(), (String) entry.getValue().get(object));
 //        }
 //

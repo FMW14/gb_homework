@@ -6,8 +6,6 @@ public class DbConnector {
     private static DbConnector dbConnector;
 
     private static Connection connection;
-//    private static Statement statement;
-//    private static PreparedStatement preparedStatement;
 
     public static synchronized DbConnector getDbConnector() {
         if (dbConnector == null) {
@@ -50,27 +48,9 @@ public class DbConnector {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:data1.db");
         }
-
-//        statement = connection.createStatement();
-
-        // DatabaseMetaData dmd = connection.getMetaData();
     }
 
     public static void disconnect() {
-//        try {
-//            if (statement != null) {
-//                statement.close();
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            if (preparedStatement != null) {
-//                preparedStatement.close();
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
         try {
             if (connection != null) {
                 connection.close();
