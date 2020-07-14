@@ -8,9 +8,17 @@ public class Main {
     private static PreparedStatement psInsert;
 
     public static void main(String[] args) {
+        DbConnector dbConnector = DbConnector.getDbConnector();
+        Student student1 = new Student();
+
+        ;
+
+        StudentRepository<Student> studentRepository = new StudentRepository<>(Student.class);
+//        studentRepository.
+
         try {
-            connect();
-            System.out.println(connection.getMetaData());
+//            connect();
+//            System.out.println(connection.getMetaData());
 //            rollbackEx();
 
 //            addDataPreparedStatementEx();
@@ -20,11 +28,13 @@ public class Main {
         } finally {
             disconnect();
         }
+
+        DbConnector.disconnect();
     }
 
     public static void connect() throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
-        connection = DriverManager.getConnection("jdbc:sqlite:javadb.db");
+        connection = DriverManager.getConnection("jdbc:sqlite:data1.db");
         stmt = connection.createStatement();
         // DatabaseMetaData dmd = connection.getMetaData();
     }

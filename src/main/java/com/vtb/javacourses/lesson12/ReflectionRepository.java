@@ -3,6 +3,7 @@ package com.vtb.javacourses.lesson12;
 import java.util.List;
 
 public abstract class ReflectionRepository<T>{
+
     public abstract void save(T object);
 
     public abstract T findById();
