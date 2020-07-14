@@ -1,5 +1,7 @@
 package com.vtb.javacourses.lesson12;
 
+import com.vtb.javacourses.lesson12.exceptions.DbTableNotFoundException;
+
 import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,9 +22,9 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
         }
     }
 
-    private void parseClass(){
+    private void parseMyClass(){
         if (!myClass.isAnnotationPresent(DbTable.class)){
-            throw new RuntimeException(myClass.getName() + " class has not annotation @DbTable");
+            throw new DbTableNotFoundException(myClass.getName() + " class has not annotation @DbTable");
         } else {
             tableName = myClass.getAnnotation(DbTable.class).name();
         }
