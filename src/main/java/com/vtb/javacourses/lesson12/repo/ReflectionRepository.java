@@ -1,4 +1,4 @@
-package com.vtb.javacourses.lesson12;
+package com.vtb.javacourses.lesson12.repo;
 
 import java.sql.SQLException;
 import java.util.List;

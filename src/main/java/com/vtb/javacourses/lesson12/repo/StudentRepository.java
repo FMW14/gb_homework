@@ -1,5 +1,10 @@
-package com.vtb.javacourses.lesson12;
+package com.vtb.javacourses.lesson12.repo;
 
+import com.vtb.javacourses.lesson12.DbConnector;
+import com.vtb.javacourses.lesson12.etities.Student;
+import com.vtb.javacourses.lesson12.annotations.DbColumn;
+import com.vtb.javacourses.lesson12.annotations.DbId;
+import com.vtb.javacourses.lesson12.annotations.DbTable;
 import com.vtb.javacourses.lesson12.exceptions.DbTableNotFoundException;
 
 import java.lang.reflect.Field;
@@ -104,6 +109,7 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
 
         for (Field field : myClass.getDeclaredFields()) {
             if (field.isAnnotationPresent(DbColumn.class)) {
+                field.setAccessible(true);
                 query.append(field.getName());
                 query.append(", ");
 

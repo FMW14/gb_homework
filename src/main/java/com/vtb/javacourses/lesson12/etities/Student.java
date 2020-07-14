@@ -1,4 +1,8 @@
-package com.vtb.javacourses.lesson12;
+package com.vtb.javacourses.lesson12.etities;
+
+import com.vtb.javacourses.lesson12.annotations.DbColumn;
+import com.vtb.javacourses.lesson12.annotations.DbId;
+import com.vtb.javacourses.lesson12.annotations.DbTable;
 
 @DbTable(name = "student")
 public class Student {
