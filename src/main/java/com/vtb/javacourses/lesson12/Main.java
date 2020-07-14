@@ -7,27 +7,23 @@ public class Main {
     private static Statement stmt;
     private static PreparedStatement psInsert;
 
-    public static void main(String[] args) {
-        DbConnector dbConnector = DbConnector.getDbConnector();
-        Student student1 = new Student();
-
-        ;
+    public static void main(String[] args) throws SQLException, ClassNotFoundException, IllegalAccessException {
+//        DbConnector dbConnector = DbConnector.getDbConnector();
+        DbConnector.connect();
+        Student student1 = new Student("AA", 5);
+//        System.out.println(DbConnector.getPreparedStatement("INSERT INTO student (name, score) VALUES ('Bob4', 60);").getMetaData());
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("ABC");
+//        sb.deleteCharAt(sb.length()-1);
+//        System.out.println(sb.toString());
+//
+//        System.out.println(student1.getClass().getSimpleName());
 
         StudentRepository<Student> studentRepository = new StudentRepository<>(Student.class);
+        studentRepository.save(student1);
+//        System.out.println(studentRepository);
 //        studentRepository.
 
-        try {
-//            connect();
-//            System.out.println(connection.getMetaData());
-//            rollbackEx();
-
-//            addDataPreparedStatementEx();
-//            rollbackEx();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            disconnect();
-        }
 
         DbConnector.disconnect();
     }
