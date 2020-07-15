@@ -18,45 +18,46 @@ import java.util.List;
 public class StudentRepository<T> extends ReflectionRepository<T> {
     private Class<T> myClass;
     private String tableName;
-    private List<EntityField> entityFields = new ArrayList<>();
+    private List<Field> fields = new ArrayList<>();
+//    private List<EntityField> entityFields = new ArrayList<>();
 
-    class EntityField {
-        String fieldName;   //maybe redundant
-//        Integer fieldIndex; //maybe redundant
-        Field field;
-        //        Type type;
-//        Method getMethod;
-//        Method setMethod;
-
-        public EntityField() {
-        }
-
-        public EntityField(Field field) {
-            this.field = field;
-            this.fieldName = field.getName();
-//            detectMethods(field);
-        }
-
-        public EntityField(Field field, Integer index) {
-            this.field = field;
-//            this.fieldIndex = index;
-            this.fieldName = field.getName(); //maybe redundant
-//            detectMethods(field);
-        }
-
-//        private void detectMethods(Field curField) {
-//            for (Method method : myClass.getDeclaredMethods()) {
-//                if (method.getName().toLowerCase().contains(curField.getName().toLowerCase())
-//                        && method.getName().toLowerCase().contains("get")) {
-//                    getMethod = method;
-//                }
-//                if (method.getName().toLowerCase().contains(curField.getName().toLowerCase())
-//                        && method.getName().toLowerCase().contains("set")) {
-//                    setMethod = method;
-//                }
-//            }
+//    class EntityField {
+//        String fieldName;   //maybe redundant
+////        Integer fieldIndex; //maybe redundant
+//        Field field;
+//        //        Type type;
+////        Method getMethod;
+////        Method setMethod;
+//
+//        public EntityField() {
 //        }
-    }
+//
+//        public EntityField(Field field) {
+//            this.field = field;
+//            this.fieldName = field.getName();
+////            detectMethods(field);
+//        }
+//
+////        public EntityField(Field field, Integer index) {
+////            this.field = field;
+//////            this.fieldIndex = index;
+////            this.fieldName = field.getName(); //maybe redundant
+//////            detectMethods(field);
+////        }
+//
+////        private void detectMethods(Field curField) {
+////            for (Method method : myClass.getDeclaredMethods()) {
+////                if (method.getName().toLowerCase().contains(curField.getName().toLowerCase())
+////                        && method.getName().toLowerCase().contains("get")) {
+////                    getMethod = method;
+////                }
+////                if (method.getName().toLowerCase().contains(curField.getName().toLowerCase())
+////                        && method.getName().toLowerCase().contains("set")) {
+////                    setMethod = method;
+////                }
+////            }
+////        }
+//    }
 
     public StudentRepository(Class<T> myClass) {
         this.myClass = myClass;
@@ -77,7 +78,7 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
         }
 
         Field fieldId = null;
-        List<Field> fields = new ArrayList<>();
+//        List<Field> fields = new ArrayList<>();
 
 
 //        int i = 1;
@@ -89,7 +90,8 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
             if (field.isAnnotationPresent(DbColumn.class)) {
                 fields.add(field);
 //                entityFields.add(new EntityField(field, i));
-                entityFields.add(new EntityField(field));
+//                entityFields.add(new EntityField(field));
+
             }
 //            i++;
         }
@@ -151,6 +153,22 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
         StringBuilder query = new StringBuilder("INSERT INTO " + tableName + " (");
         StringBuilder queryValues = new StringBuilder("VALUES (");
 
+//        for (EntityField entityField : entityFields){
+//            entityField.field.setAccessible(true);
+//            query.append(entityField.fieldName);
+//            query.append(", ");
+//
+//            if (entityField.field.getType() == String.class) {
+//                queryValues.append("'");
+//                queryValues.append(field.get(object));
+//                queryValues.append("'");
+//            } else {
+//                queryValues.append(field.get(object));
+//            }
+//            queryValues.append(", ");
+//
+//        }
+
         for (Field field : myClass.getDeclaredFields()) {
             if (field.isAnnotationPresent(DbColumn.class)) {
                 field.setAccessible(true);
@@ -200,9 +218,9 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
             Student student = new Student();
 
             student.setId(rs.getLong("id"));
-            for (EntityField entityField : entityFields) {
-                entityField.field.setAccessible(true);
-                entityField.field.set(student, rs.getObject(entityField.fieldName));
+            for (Field curField: fields) {
+                curField.setAccessible(true);
+                curField.set(student, rs.getObject(curField.getName()));
             }
 
             return (T) student;
@@ -220,9 +238,9 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
             while (rs.next()) {
                 Student student = new Student();
                 student.setId(rs.getLong("id"));
-                for (EntityField entityField : entityFields) {
-                    entityField.field.setAccessible(true);
-                    entityField.field.set(student, rs.getObject(entityField.fieldName));
+                for (Field curField: fields) {
+                    curField.setAccessible(true);
+                    curField.set(student, rs.getObject(curField.getName()));
                 }
                 students.add((T) student);
             }
