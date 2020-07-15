@@ -19,45 +19,6 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
     private Class<T> myClass;
     private String tableName;
     private List<Field> fields = new ArrayList<>();
-//    private List<EntityField> entityFields = new ArrayList<>();
-
-//    class EntityField {
-//        String fieldName;   //maybe redundant
-////        Integer fieldIndex; //maybe redundant
-//        Field field;
-//        //        Type type;
-////        Method getMethod;
-////        Method setMethod;
-//
-//        public EntityField() {
-//        }
-//
-//        public EntityField(Field field) {
-//            this.field = field;
-//            this.fieldName = field.getName();
-////            detectMethods(field);
-//        }
-//
-////        public EntityField(Field field, Integer index) {
-////            this.field = field;
-//////            this.fieldIndex = index;
-////            this.fieldName = field.getName(); //maybe redundant
-//////            detectMethods(field);
-////        }
-//
-////        private void detectMethods(Field curField) {
-////            for (Method method : myClass.getDeclaredMethods()) {
-////                if (method.getName().toLowerCase().contains(curField.getName().toLowerCase())
-////                        && method.getName().toLowerCase().contains("get")) {
-////                    getMethod = method;
-////                }
-////                if (method.getName().toLowerCase().contains(curField.getName().toLowerCase())
-////                        && method.getName().toLowerCase().contains("set")) {
-////                    setMethod = method;
-////                }
-////            }
-////        }
-//    }
 
     public StudentRepository(Class<T> myClass) {
         this.myClass = myClass;
@@ -78,10 +39,7 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
         }
 
         Field fieldId = null;
-//        List<Field> fields = new ArrayList<>();
 
-
-//        int i = 1;
         for (Field field : myClass.getDeclaredFields()) {
             if (field.isAnnotationPresent(DbId.class)) {
                 fieldId = field;
@@ -89,13 +47,8 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
 
             if (field.isAnnotationPresent(DbColumn.class)) {
                 fields.add(field);
-//                entityFields.add(new EntityField(field, i));
-//                entityFields.add(new EntityField(field));
-
             }
-//            i++;
         }
-
 
         //---CHECK FIELDS---
         if (fieldId == null) {
@@ -105,7 +58,6 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
         if (fields.isEmpty()) {
             throw new DbColumnNotFoundException(myClass.getName() + " class has not fields with annotation @DbColumn");
         }
-
     }
 
 //    private PreparedStatement prepareInsertOld(T object) throws SQLException {
@@ -153,43 +105,27 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
         StringBuilder query = new StringBuilder("INSERT INTO " + tableName + " (");
         StringBuilder queryValues = new StringBuilder("VALUES (");
 
-//        for (EntityField entityField : entityFields){
-//            entityField.field.setAccessible(true);
-//            query.append(entityField.fieldName);
-//            query.append(", ");
-//
-//            if (entityField.field.getType() == String.class) {
-//                queryValues.append("'");
-//                queryValues.append(field.get(object));
-//                queryValues.append("'");
-//            } else {
-//                queryValues.append(field.get(object));
-//            }
-//            queryValues.append(", ");
-//
-//        }
+        for (Field curField: fields){
+            curField.setAccessible(true);
+            query.append(curField.getName());
+            query.append(", ");
 
-        for (Field field : myClass.getDeclaredFields()) {
-            if (field.isAnnotationPresent(DbColumn.class)) {
-                field.setAccessible(true);
-                query.append(field.getName());
-                query.append(", ");
-
-                if (field.getType() == String.class) {
-                    queryValues.append("'");
-                    queryValues.append(field.get(object));
-                    queryValues.append("'");
-                } else {
-                    queryValues.append(field.get(object));
-                }
-                queryValues.append(", ");
+            if (curField.getType() == String.class) {
+                queryValues.append("'");
+                queryValues.append(curField.get(object));
+                queryValues.append("'");
+            } else {
+                queryValues.append(curField.get(object));
             }
+            queryValues.append(", ");
+
         }
         query.deleteCharAt(query.length() - 2);
         query.append(") ");
         queryValues.deleteCharAt(queryValues.length() - 2);
         queryValues.append(");");
-        query.append(queryValues);
+
+//        System.out.println(query.toString());
 
         DbConnector.getStatement().executeUpdate(query.toString());
 
