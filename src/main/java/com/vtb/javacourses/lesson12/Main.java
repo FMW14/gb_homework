@@ -14,8 +14,9 @@ public class Main {
 
         System.out.println(studentRepository.findById(1L));
         System.out.println(studentRepository.findById(2L));
+        System.out.println(studentRepository.findAll());
 
-        studentRepository.save(student1);
+//        studentRepository.save(student1);
 //        Student student2 = studentRepository.findById(1L);
 //        System.out.println(student2.toString());
 

@@ -10,7 +10,6 @@ import com.vtb.javacourses.lesson12.exceptions.DbIdNotFoundException;
 import com.vtb.javacourses.lesson12.exceptions.DbTableNotFoundException;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -220,11 +219,16 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
 
             while (rs.next()) {
                 Student student = new Student();
-                student.setId(rs.getLong(1));
-                student.setName(rs.getString(2));
-                student.setScore(rs.getInt(3));
+                student.setId(rs.getLong("id"));
+                for (EntityField entityField : entityFields) {
+                    entityField.field.setAccessible(true);
+                    entityField.field.set(student, rs.getObject(entityField.fieldName));
+                }
                 students.add((T) student);
             }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+//            throw new RuntimeException();
         }
 
         return students;
