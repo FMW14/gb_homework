@@ -10,9 +10,7 @@ import com.vtb.javacourses.lesson12.exceptions.DbIdNotFoundException;
 import com.vtb.javacourses.lesson12.exceptions.DbTableNotFoundException;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,38 +23,40 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
 
     class EntityField {
         String fieldName;   //maybe redundant
-        Integer fieldIndex; //maybe redundant
+//        Integer fieldIndex; //maybe redundant
         Field field;
-//        Type type;
-        Method getMethod;
-        Method setMethod;
+        //        Type type;
+//        Method getMethod;
+//        Method setMethod;
 
         public EntityField() {
         }
 
         public EntityField(Field field) {
             this.field = field;
-            detectMethods(field);
+            this.fieldName = field.getName();
+//            detectMethods(field);
         }
 
         public EntityField(Field field, Integer index) {
             this.field = field;
-            this.fieldIndex = index;
+//            this.fieldIndex = index;
             this.fieldName = field.getName(); //maybe redundant
-            detectMethods(field);
+//            detectMethods(field);
         }
-        private void detectMethods(Field curField){
-            for (Method method: myClass.getDeclaredMethods()){
-                if(method.getName().toLowerCase().contains(curField.getName().toLowerCase())
-                        && method.getName().toLowerCase().contains("get")){
-                    getMethod = method;
-                }
-                if(method.getName().toLowerCase().contains(curField.getName().toLowerCase())
-                        && method.getName().toLowerCase().contains("set")){
-                    setMethod = method;
-                }
-            }
-        }
+
+//        private void detectMethods(Field curField) {
+//            for (Method method : myClass.getDeclaredMethods()) {
+//                if (method.getName().toLowerCase().contains(curField.getName().toLowerCase())
+//                        && method.getName().toLowerCase().contains("get")) {
+//                    getMethod = method;
+//                }
+//                if (method.getName().toLowerCase().contains(curField.getName().toLowerCase())
+//                        && method.getName().toLowerCase().contains("set")) {
+//                    setMethod = method;
+//                }
+//            }
+//        }
     }
 
     public StudentRepository(Class<T> myClass) {
@@ -81,7 +81,7 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
         List<Field> fields = new ArrayList<>();
 
 
-        int i = 1;
+//        int i = 1;
         for (Field field : myClass.getDeclaredFields()) {
             if (field.isAnnotationPresent(DbId.class)) {
                 fieldId = field;
@@ -89,9 +89,10 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
 
             if (field.isAnnotationPresent(DbColumn.class)) {
                 fields.add(field);
-                entityFields.add(new EntityField(field, i));
+//                entityFields.add(new EntityField(field, i));
+                entityFields.add(new EntityField(field));
             }
-            i++;
+//            i++;
         }
 
 
@@ -198,46 +199,15 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
     public T findById(Long id) throws SQLException {
         try (ResultSet rs = DbConnector.getStatement().executeQuery("SELECT * FROM " + tableName + " WHERE id = " + id + ";")) {
             Student student = new Student();
-//            student.getClass().getDeclaredMethod("setName", String.class).invoke(student, "test"); //работает
 
             student.setId(rs.getLong("id"));
-            for (EntityField entityField : entityFields){
+            for (EntityField entityField : entityFields) {
                 entityField.field.setAccessible(true);
                 entityField.field.set(student, rs.getObject(entityField.fieldName));
-
-//                student.getClass().getDeclaredField(entityField.fieldName).setAccessible(true);
-
-                //worked!! but shitty
-//                Field tempField = myClass.getDeclaredField(entityField.fieldName);
-//                tempField.setAccessible(true);
-//                System.out.println(tempField.getName() + "  " + tempField.canAccess(student));
-//                tempField.set(student, rs.getObject(entityField.fieldName));
-
-
-//                myClass.getDeclaredField(entityField.fieldName).setAccessible(true);
-//                System.out.println(myClass.getDeclaredField(entityField.fieldName).isAccessible());
-//                student.getClass().getDeclaredField(entityField.fieldName).set(student, rs.getObject(entityField.fieldName));
-
-//                Method m = entityField.setMethod;
-//                student.getClass().getMethod(entityField.setMethod.getName()); //не работает
-//                student.getClass().getMethod(m.getName()).invoke(rs.getObject(entityField.fieldIndex)); //не работает
-
-
-//                student.getClass().getDeclaredMethod(m.getName()).invoke(student,""); !!!!
-//                entityField.setMethod.invoke(rs.getObject(entityField.fieldIndex));
-//                rs.getObject(1, myClass);
             }
 
-//            student.setId(rs.getLong("id"));
-//            student.setName(rs.getString("name"));
-//            student.s
-
-//            student.setId(rs.getLong(1));
-//            student.setName(rs.getString(2));
-//            student.setScore(rs.getInt(3));
-
             return (T) student;
-        } catch (IllegalAccessException e ) {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
             throw new RuntimeException(); // TODO: 15.07.2020 create new exception with setter not found or cant access
         }
@@ -267,6 +237,6 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
 
     @Override
     public void deleteAll() throws SQLException {
-        DbConnector.getStatement().executeUpdate("DROP TABLE IF EXISTS "+ tableName);
+        DbConnector.getStatement().executeUpdate("DROP TABLE IF EXISTS " + tableName);
     }
 }
