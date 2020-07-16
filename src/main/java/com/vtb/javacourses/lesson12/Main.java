@@ -1,6 +1,6 @@
 package com.vtb.javacourses.lesson12;
 
-import com.vtb.javacourses.lesson12.etities.Student;
+import com.vtb.javacourses.lesson12.entities.Student;
 import com.vtb.javacourses.lesson12.repo.StudentRepository;
 
 import java.sql.*;

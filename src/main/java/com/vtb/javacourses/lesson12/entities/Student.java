@@ -1,4 +1,4 @@
-package com.vtb.javacourses.lesson12.etities;
+package com.vtb.javacourses.lesson12.entities;
 
 import com.vtb.javacourses.lesson12.annotations.DbColumn;
 import com.vtb.javacourses.lesson12.annotations.DbId;

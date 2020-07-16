@@ -4,7 +4,7 @@ import com.vtb.javacourses.lesson12.DbConnector;
 import com.vtb.javacourses.lesson12.annotations.DbColumn;
 import com.vtb.javacourses.lesson12.annotations.DbId;
 import com.vtb.javacourses.lesson12.annotations.DbTable;
-import com.vtb.javacourses.lesson12.etities.Student;
+import com.vtb.javacourses.lesson12.entities.Student;
 import com.vtb.javacourses.lesson12.exceptions.DbColumnNotFoundException;
 import com.vtb.javacourses.lesson12.exceptions.DbIdNotFoundException;
 import com.vtb.javacourses.lesson12.exceptions.DbTableNotFoundException;
@@ -105,7 +105,7 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
         StringBuilder query = new StringBuilder("INSERT INTO " + tableName + " (");
         StringBuilder queryValues = new StringBuilder("VALUES (");
 
-        for (Field curField: fields){
+        for (Field curField : fields) {
             curField.setAccessible(true);
             query.append(curField.getName());
             query.append(", ");
@@ -124,11 +124,11 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
         query.append(") ");
         queryValues.deleteCharAt(queryValues.length() - 2);
         queryValues.append(");");
+        query.append(queryValues);
 
-//        System.out.println(query.toString());
+        System.out.println(query.toString());
 
         DbConnector.getStatement().executeUpdate(query.toString());
-
 
 //        Map<Integer, Field> objectValues = new TreeMap<>();
 //        int i = 0;
@@ -152,9 +152,10 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
     public T findById(Long id) throws SQLException {
         try (ResultSet rs = DbConnector.getStatement().executeQuery("SELECT * FROM " + tableName + " WHERE id = " + id + ";")) {
             Student student = new Student();
+//            Object student = new T();
 
             student.setId(rs.getLong("id"));
-            for (Field curField: fields) {
+            for (Field curField : fields) {
                 curField.setAccessible(true);
                 curField.set(student, rs.getObject(curField.getName()));
             }
@@ -162,7 +163,7 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
             return (T) student;
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            throw new RuntimeException(); // TODO: 15.07.2020 create new exception with setter not found or cant access
+            throw new RuntimeException();
         }
     }
 
@@ -174,7 +175,7 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
             while (rs.next()) {
                 Student student = new Student();
                 student.setId(rs.getLong("id"));
-                for (Field curField: fields) {
+                for (Field curField : fields) {
                     curField.setAccessible(true);
                     curField.set(student, rs.getObject(curField.getName()));
                 }
