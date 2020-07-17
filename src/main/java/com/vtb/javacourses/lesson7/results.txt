@@ -1,0 +1,15 @@
+Get Middle Element x10000
+            10      100     10000       100000
+ArrayList:  1       1       1           2
+LinkedList: 1       3       79          893
+
+
+Delete Middle Element
+            100     10000       100000
+ArrayList:  0       5           149
+LinkedList: 0       38          2833
+
+
+HashMap vs MyEntries
+HashMap:    12
+MyEntries:  3582
