@@ -9,7 +9,9 @@ public class Main {
 
         getNumberOfSequence(readFile(file), "wer");
 
-        joinAllFiles(new File("./src/main/resources/lesson14/task/"));
+        joinAllFiles(new File("./src/main/resources/lesson14/task2/"));
+//        joinAllFiles(new File("./src/main/resources/lesson14/task/"));
+//        joinAllFiles(new File("./src/main/resources/lesson14/testdir"));
 
         File dirForDelete = new File("./src/main/resources/lesson14/task3/");
         deleteDir(dirForDelete);
@@ -29,7 +31,6 @@ public class Main {
         }
 
         System.out.println("Number of sequence entries: " + count);
-
         return count;
     }
 
@@ -48,18 +49,13 @@ public class Main {
 
     //Task2
     public static File joinAllFiles(File dir) throws IOException {
-        if (dir == null) {
-            throw new FileNotFoundException();
-        }
         if (!dir.exists()) {
-            throw new FileNotFoundException(dir + " does not exists");
+            throw new FileNotFoundException("Dir does not exists: " + (dir.getAbsolutePath()));
         }
         if (!dir.isDirectory()) {
-            throw new FileNotFoundException(dir + " is not directory");
+            throw new InvalidPathException(dir.getAbsolutePath() + " is not directory");
         }
-
-
-        if (dir.listFiles() != null) { // FIXME: 18.07.2020
+        if (dir.listFiles().length != 0) {
             File[] files = dir.listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
@@ -68,7 +64,7 @@ public class Main {
                 }
             });
 
-//            File joined = new File(dir.getPath() + "/joined_" + dir.getName() + ".txt");  //NOT WORKING
+//            File joined = new File(dir.getPath() + "/joined_" + dir.getName() + ".txt");  //NOT WORKING (working only once exact)
             String outputPath = dir.getPath().substring(0, dir.getPath().lastIndexOf(File.separator)) + File.separator + "joined_" + dir.getName() + ".txt";    //separator must always exists in correct path
             File joined = new File(outputPath);
             FileOutputStream foStream = new FileOutputStream(joined, false);
@@ -85,7 +81,7 @@ public class Main {
             System.out.println("Files merged");
             return joined;
         } else {
-            throw new RuntimeException(dir + " has no files");
+            throw new EmptyDirectoryException(dir.getAbsolutePath() + " has no files");
         }
     }
 
@@ -102,11 +98,10 @@ public class Main {
                 for (File curFile : files) {
                     deleteDir(curFile);
                 }
-
             }
         }
+
         System.out.println("Deleting " + path.getAbsoluteFile());
         path.delete();
-
     }
 }
