@@ -7,13 +7,13 @@ public class Main {
         String FILENAME1 = "./src/main/resources/lesson14/task1/data1.txt";
         File file = new File(FILENAME1);
 
-//        String readed = readFile(file);
-//        System.out.println(readed);
-
-//        int result = getNumberOfSequence(readFile(file).toString(), "wer");
         getNumberOfSequence(readFile(file), "wer");
 
-        joinAllFiles(new File("./src/main/resources/lesson14/task2/"));
+        joinAllFiles(new File("./src/main/resources/lesson14/task/"));
+
+        File dirForDelete = new File("./src/main/resources/lesson14/task3/");
+        deleteDir(dirForDelete);
+//        deleteDir(null);
 
     }
 
@@ -51,14 +51,15 @@ public class Main {
         if (dir == null) {
             throw new FileNotFoundException();
         }
-        if (!dir.isDirectory()) {
-            throw new FileNotFoundException(dir + " is not directory");
-        }
         if (!dir.exists()) {
             throw new FileNotFoundException(dir + " does not exists");
         }
+        if (!dir.isDirectory()) {
+            throw new FileNotFoundException(dir + " is not directory");
+        }
 
-        if (dir.listFiles() != null) {
+
+        if (dir.listFiles() != null) { // FIXME: 18.07.2020
             File[] files = dir.listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
@@ -68,7 +69,7 @@ public class Main {
             });
 
 //            File joined = new File(dir.getPath() + "/joined_" + dir.getName() + ".txt");  //NOT WORKING
-            String outputPath = dir.getPath().substring(0, dir.getPath().lastIndexOf(File.separator)) + File.separator +"joined_" + dir.getName() + ".txt";    //separator must always exists in correct path
+            String outputPath = dir.getPath().substring(0, dir.getPath().lastIndexOf(File.separator)) + File.separator + "joined_" + dir.getName() + ".txt";    //separator must always exists in correct path
             File joined = new File(outputPath);
             FileOutputStream foStream = new FileOutputStream(joined, false);
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(foStream));
@@ -86,5 +87,26 @@ public class Main {
         } else {
             throw new RuntimeException(dir + " has no files");
         }
+    }
+
+    //Task3
+    public static void deleteDir(File path) {
+        if (!path.exists()) {
+            System.err.println("Dir does not exists: " + path.getAbsolutePath());
+            return;
+        }
+
+        if (path.isDirectory()) {
+            File[] files = path.listFiles();
+            if (files.length != 0) {
+                for (File curFile : files) {
+                    deleteDir(curFile);
+                }
+
+            }
+        }
+        System.out.println("Deleting " + path.getAbsoluteFile());
+        path.delete();
+
     }
 }
