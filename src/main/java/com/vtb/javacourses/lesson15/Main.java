@@ -6,9 +6,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,11 +17,14 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Path file1 = Paths.get("./src/main/resources/lesson15/task1.txt");
         Path path2 = Paths.get("./src/main/resources/lesson15/task2");
+        Path path3 = Paths.get("./src/main/resources/lesson15/task3");
 
 //        System.out.println(getNumberOfSequence(file1, "we"));
 
-        joinAllFiles(path2);
+//        joinAllFiles(path2);
 //        joinAllFiles(Paths.get("./src/main/resources/lesson15/task4"));
+
+        findFiles(path3);
 
     }
 
@@ -118,5 +120,43 @@ public class Main {
 
         return Paths.get(resultFileName);
     }
+
+    //Task3
+    public static void findFiles(Path dir) throws IOException {
+        if (!Files.exists(dir)) {
+            throw new RuntimeException(dir + " doesnt exists");
+        }
+
+        List<Path> pathList = new ArrayList<>();
+
+        Files.walkFileTree(dir, new FileVisitor<Path>() {
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                if (Files.size(file) < 100_000) {
+                    pathList.add(file);
+                }
+//                pathList.add(file);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                return FileVisitResult.CONTINUE;
+            }
+        });
+
+        System.out.println(pathList);
+    }
+
 
 }
