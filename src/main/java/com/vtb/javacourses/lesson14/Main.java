@@ -48,7 +48,7 @@ public class Main {
     }
 
     //Task2
-    public static File joinAllFiles(File dir) throws IOException {
+    public static File joinAllFiles(File dir) throws IOException { //TODO записывать в итоговый файл по мере чтения файлов
         if (!dir.exists()) {
             throw new FileNotFoundException("Dir does not exists: " + (dir.getAbsolutePath()));
         }
