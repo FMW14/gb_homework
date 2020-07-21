@@ -20,7 +20,7 @@ public class StudentRepository<T> extends ReflectionRepository<T> {
     private String tableName;
     private List<Field> fields = new ArrayList<>();
 
-    public StudentRepository(Class<T> myClass) {
+    public StudentRepository(Class<T> myClass) { //TODO создавать препаред стэйтмент при создании репозитория
         this.myClass = myClass;
         try {
             DbConnector.connect();
