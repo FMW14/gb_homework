@@ -15,10 +15,7 @@ public class ProductRepo {
             session = HibernateUtil.getSession();
             session.beginTransaction();
             customerFromDb = session.get(Product.class, id);
-//            System.out.println(customerFromDb);
-
             session.getTransaction().commit();
-
         } finally {
             if (session != null) {
                 session.close();
@@ -35,14 +32,10 @@ public class ProductRepo {
         try {
             session = HibernateUtil.getSession();
             session.beginTransaction();
-            Query query = session.getSession().
-                    createQuery("from Product where name=:name");
+            Query query = session.getSession().createQuery("from Product where name=:name");
             query.setParameter("name", name);
 
             productFromDb = (Product) query.uniqueResult();
-
-//            System.out.println(productFromDb);
-
             session.getTransaction().commit();
 
         } finally {
@@ -62,7 +55,6 @@ public class ProductRepo {
             session.beginTransaction();
             session.saveOrUpdate(product);
             session.getTransaction().commit();
-
         } finally {
             if (session != null) {
                 session.close();
@@ -79,10 +71,7 @@ public class ProductRepo {
             session.beginTransaction();
             productFromDb = session.get(Product.class, id);
             session.delete(productFromDb);
-//            System.out.println(productFromDb);
-
             session.getTransaction().commit();
-
         } finally {
             if (session != null) {
                 session.close();

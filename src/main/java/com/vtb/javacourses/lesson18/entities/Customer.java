@@ -21,13 +21,6 @@ public class Customer {
     @Column(name = "name")
     private String name;
 
-    //    @ManyToMany
-//    @JoinTable(
-//            name = "customers_products",
-//            joinColumns = @JoinColumn(name = "customers_id"),
-//            inverseJoinColumns = @JoinColumn(name = "products_id")
-//    )
-
     @OneToMany(
             mappedBy = "customer",
             cascade = CascadeType.ALL,
@@ -36,8 +29,6 @@ public class Customer {
     )
     private List<CustomerProduct> customerProducts = new ArrayList<>();
 
-//    private List<Product> products = new ArrayList<>();
-
     public Customer(String name) {
         this.name = name;
     }
@@ -45,7 +36,7 @@ public class Customer {
     public Customer() {
     }
 
-    public void addProduct(Product newProduct){
-        this.customerProducts.add( new CustomerProduct(this, newProduct));
+    public void addProduct(Product newProduct) {
+        this.customerProducts.add(new CustomerProduct(this, newProduct));
     }
 }

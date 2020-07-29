@@ -9,25 +9,18 @@ import java.util.stream.Collectors;
 
 public class PrepareData {
     public static void forcePrepareData() {
-//        SessionFactory factory = new Configuration()
-//                .configure("configs/hibernate.cfg.xml")
-//                .buildSessionFactory();
-//        HibernateUtil.loadSessionFactory();
         Session session = HibernateUtil.getSession();
         try {
-//            Path test = new Pa
             System.out.println("file init = " + Files.exists(Paths.get("src/main/resources/lesson18/init_db.sql")));
-            System.out.println("start parse init_db");
+//            System.out.println("start parse init_db");
             String sql = Files.lines(Paths.get("src/main/resources/lesson18/init_db.sql")).collect(Collectors.joining(" "));
-            System.out.println("end parse init_db");
-//            session = factory.getCurrentSession();
+//            System.out.println("end parse init_db");
             session.beginTransaction();
             session.createNativeQuery(sql).executeUpdate();
             session.getTransaction().commit();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-//            factory.close();
             if (session != null) {
                 session.close();
             }

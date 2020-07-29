@@ -23,13 +23,6 @@ public class Product {
     @Column(name = "price")
     private Integer price;
 
-    //    @ManyToMany
-//    @JoinTable(
-//            name = "customers_products",
-//            joinColumns = @JoinColumn(name = "products_id"),
-//            inverseJoinColumns = @JoinColumn(name = "customers_id")
-//    )
-
     @OneToMany(
             mappedBy = "product",
             cascade = CascadeType.ALL,

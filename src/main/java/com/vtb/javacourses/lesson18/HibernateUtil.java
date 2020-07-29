@@ -18,18 +18,9 @@ public class HibernateUtil {
     }
 
     public static void loadSessionFactory() {
-
         sessionFactory = new Configuration()
-//                .configure("./scr/main/resources/lesson18/configs/hibernate.cfg.xml")
                 .configure("lesson18/configs/hibernate.cfg.xml")
-//                .configure(".\\scr\\main\\resources\\lesson18\\configs\\hibernate.cfg.xml")
                 .buildSessionFactory();
-
-//        Configuration configuration = new Configuration();
-//        configuration.configure("/j2n-hibernate.cfg.xml");
-//        configuration.addAnnotatedClass(Employee.class);
-//        ServiceRegistry srvcReg = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
-//        sessionFactory = configuration.buildSessionFactory(srvcReg);
     }
 
     public static Session getSession() throws HibernateException {
@@ -42,7 +33,7 @@ public class HibernateUtil {
             t.printStackTrace();
         }
         if (retSession == null) {
-            System.err.println("session is discovered null");
+            System.err.println("Session is discovered null");
         }
 
         return retSession;

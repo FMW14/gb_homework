@@ -15,8 +15,6 @@ public class CustomerRepo {
             session = HibernateUtil.getSession();
             session.beginTransaction();
             customerFromDb = session.get(Customer.class, id);
-//            System.out.println(customerFromDb);
-
             session.getTransaction().commit();
 
         } finally {
@@ -40,9 +38,6 @@ public class CustomerRepo {
             query.setParameter("name", name);
 
             customerFromDb = (Customer) query.uniqueResult();
-
-//            System.out.println(customerFromDb);
-
             session.getTransaction().commit();
 
         } finally {
@@ -62,13 +57,6 @@ public class CustomerRepo {
         }
 
         try {
-//            Customer customerForUpdate = null;
-//            try {
-//                customerForUpdate = session.get(Customer.class, customer.getId());
-//            } catch (NullPointerException e){
-//                System.out.println("CustomerForUpdate is null");
-//            }
-
             session = HibernateUtil.getSession();
             session.beginTransaction();
 
@@ -110,14 +98,12 @@ public class CustomerRepo {
         try {
             session = HibernateUtil.getSession();
             session.beginTransaction();
-            Query query = session.getSession().
-                    createQuery("from Customer where name=:name");
-            query.setParameter("name", name);
-            customerFromDb = (Customer) query.uniqueResult();
+//            Query query = session.getSession().createQuery("from Customer where name=:name");
+//            query.setParameter("name", name);
+//            customerFromDb = (Customer) query.uniqueResult();
+//
+            customerFromDb = getByName(name);
             session.delete(customerFromDb);
-
-//            System.out.println(customerFromDb);
-
             session.getTransaction().commit();
 
         } finally {

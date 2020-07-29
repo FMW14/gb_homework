@@ -27,20 +27,14 @@ public class Main {
         customer1.setCustomerProducts(customerProducts1);
         customerRepo.save(customer1);
 
-        customerRepo.getById(4L);
-//        customerRepo.deleteById(4L);
-//        customerRepo.deleteByName("Bob");
-//        customerRepo.deleteByName("name1");
-//        customerRepo.getById(3L);
+        customerRepo.deleteByName("Bob");
 //        customerRepo.getById(4L);
-
-
+        
         Scanner scanner = new Scanner(System.in);
         ScannerParser scannerParser = new ScannerParser();
         boolean waiting = true;
         while (waiting) {
             if (scanner.hasNextLine()) {
-//                int i = scanner.nextInt();
                 String s = scanner.nextLine();
                 Map<String, String> parsedLine = scannerParser.parseLine(s);
 
@@ -62,23 +56,19 @@ public class Main {
 
                 if (parsedLine.get("command").equals("/buy")){
 //                    deleteProductByName(parsedLine.get("arg1"));
+                    // TODO: 30.07.2020 parselong 
                     buy(Long.parseLong(parsedLine.get("arg1")), Long.parseLong(parsedLine.get("arg2")));
                 }
 
-//                if (s.equals("/showProductsByConsumer")){
-//                    printProductsByCustomerName(s);
-//                }
-
-//                System.out.println(s);
-            } else {
-//                System.out.println("Вы ввели не целое число");
+                if (parsedLine.get("command").equals("/end")){
+                    waiting = false;
+                }
             }
         }
     }
 
     public static void printProductsByCustomerName(String name) {
         CustomerRepo customerRepo = new CustomerRepo();
-//        name = "Bob";
         Customer customer = customerRepo.getByName(name);
 
         if (customer.getCustomerProducts() != null || !customer.getCustomerProducts().isEmpty()) {
@@ -92,15 +82,11 @@ public class Main {
     }
 
     public static void printPCustomersByProductName(String name) {
-//        CustomerRepo customerRepo = new CustomerRepo();
         ProductRepo productRepo = new ProductRepo();
-//        name = "Bob";
         Product product = productRepo.getByName(name);
-//        Customer customer = customerRepo.getByName(name);
 
         try{
             if(product.getCustomerProducts().isEmpty()){
-//                System.out.println(123445);
                 throw new NullPointerException("No customers"); //TODO exc
             } else {
                 for (CustomerProduct cp : product.getCustomerProducts()) {
