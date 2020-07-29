@@ -3,6 +3,7 @@ package com.vtb.javacourses.lesson18;
 import com.vtb.javacourses.lesson18.entities.Customer;
 import com.vtb.javacourses.lesson18.entities.CustomerProduct;
 import com.vtb.javacourses.lesson18.entities.Product;
+import com.vtb.javacourses.lesson18.exceptions.EmptyListException;
 import com.vtb.javacourses.lesson18.repos.CustomerRepo;
 import com.vtb.javacourses.lesson18.repos.ProductRepo;
 import com.vtb.javacourses.lesson18.utils.PrepareData;
@@ -32,6 +33,7 @@ public class Main {
         ScannerParser scannerParser = new ScannerParser();
         System.out.println("Enter command:");
         boolean waiting = true;
+
         while (waiting) {
             if (scanner.hasNextLine()) {
                 String s = scanner.nextLine();
@@ -70,13 +72,16 @@ public class Main {
         CustomerRepo customerRepo = new CustomerRepo();
         Customer customer = customerRepo.getByName(name);
 
-        // TODO: 30.07.2020 exc
-        if (customer.getCustomerProducts() != null || !customer.getCustomerProducts().isEmpty()) {
-            for (CustomerProduct cp : customer.getCustomerProducts()) {
-                System.out.println(cp.getProduct().getName());
+        try {
+            if (!customer.getCustomerProducts().isEmpty()) {
+                for (CustomerProduct cp : customer.getCustomerProducts()) {
+                    System.out.println(cp.getProduct().getName());
+                }
+            } else {
+                throw new EmptyListException("No products");
             }
-        } else {
-            System.out.println("Customer has no products");
+        } catch (EmptyListException e) {
+            e.printStackTrace();
         }
 
     }
@@ -86,15 +91,14 @@ public class Main {
         Product product = productRepo.getByName(name);
 
         try {
-            if (product.getCustomerProducts().isEmpty()) {
-                throw new NullPointerException("No customers"); //TODO exc
-            } else {
+            if (!product.getCustomerProducts().isEmpty()) {
                 for (CustomerProduct cp : product.getCustomerProducts()) {
                     System.out.println(cp.getCustomer().getName());
                 }
+            } else {
+                throw new EmptyListException("No customers");
             }
-
-        } catch (NullPointerException e) {
+        } catch (EmptyListException e) {
             e.printStackTrace();
         }
     }
