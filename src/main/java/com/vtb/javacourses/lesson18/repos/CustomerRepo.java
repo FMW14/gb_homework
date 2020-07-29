@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 public class CustomerRepo {
-    public Customer getById(Long id){
+    public Customer getById(Long id) {
 
         Session session = null;
         Customer customerFromDb;
@@ -28,14 +28,14 @@ public class CustomerRepo {
         return customerFromDb;
     }
 
-    public Customer getByName(String name){
+    public Customer getByName(String name) {
         Session session = null;
         Customer customerFromDb;
 
         try {
             session = HibernateUtil.getSession();
             session.beginTransaction();
-            Query query= session.getSession().
+            Query query = session.getSession().
                     createQuery("from Customer where name=:name");
             query.setParameter("name", name);
 
@@ -54,34 +54,27 @@ public class CustomerRepo {
         return customerFromDb;
     }
 
-    public void save(Customer customer){
+    public void save(Customer customer) {
         Session session = null;
 
+        if (customer == null){
+            return;
+        }
+
         try {
-            session = HibernateUtil.getSession();
-            session.beginTransaction();
-            session.save(customer);
-//            University university = session.get(University.class, 1L);
-
-
-//            System.out.println(university);
-//            System.out.println("Students: ");
-//            for (Student s : university.getStudents()) {
-//                System.out.println(s.getName());
+//            Customer customerForUpdate = null;
+//            try {
+//                customerForUpdate = session.get(Customer.class, customer.getId());
+//            } catch (NullPointerException e){
+//                System.out.println("CustomerForUpdate is null");
 //            }
 
-//            Student student = new Student("Zahar", university);
-//            session.save(student);
-//            university.getStudents().add(student);
-            session.getTransaction().commit();
+            session = HibernateUtil.getSession();
+            session.beginTransaction();
 
-//            session = factory.getCurrentSession();
-//            session.beginTransaction();
-//            University universityFetch = (University)session.getNamedQuery("withStudents")
-//                    .setParameter("id", 2L)
-//                    .getSingleResult();
-//            session.getTransaction().commit();
-//            System.out.println(universityFetch.getStudents());
+            session.saveOrUpdate(customer);
+
+            session.getTransaction().commit();
         } finally {
 //            factory.close();
             if (session != null) {
@@ -90,13 +83,47 @@ public class CustomerRepo {
         }
     }
 
-    public Customer deleteById(Long id){
+    public void deleteById(Long id) {
+        Session session = null;
+        Customer customerFromDb;
 
-        return null;
+        try {
+            session = HibernateUtil.getSession();
+            session.beginTransaction();
+            customerFromDb = session.get(Customer.class, id);
+            session.delete(customerFromDb);
+//            System.out.println(customerFromDb);
+
+            session.getTransaction().commit();
+
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
-    public Customer deleteByName(String name){
+    public void deleteByName(String name) {
+        Session session = null;
+        Customer customerFromDb;
 
-        return null;
+        try {
+            session = HibernateUtil.getSession();
+            session.beginTransaction();
+            Query query = session.getSession().
+                    createQuery("from Customer where name=:name");
+            query.setParameter("name", name);
+            customerFromDb = (Customer) query.uniqueResult();
+            session.delete(customerFromDb);
+
+//            System.out.println(customerFromDb);
+
+            session.getTransaction().commit();
+
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 }

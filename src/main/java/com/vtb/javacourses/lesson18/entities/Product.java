@@ -1,12 +1,14 @@
 package com.vtb.javacourses.lesson18.entities;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@ToString
 @Entity
 @Table(name = "products")
 public class Product {
