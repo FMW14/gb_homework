@@ -20,7 +20,9 @@ public class HibernateUtil {
     public static void loadSessionFactory() {
 
         sessionFactory = new Configuration()
+//                .configure("./scr/main/resources/lesson18/configs/hibernate.cfg.xml")
                 .configure("lesson18/configs/hibernate.cfg.xml")
+//                .configure(".\\scr\\main\\resources\\lesson18\\configs\\hibernate.cfg.xml")
                 .buildSessionFactory();
 
 //        Configuration configuration = new Configuration();

@@ -13,15 +13,26 @@ public class CustomerProduct {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+//    @EmbeddedId
+//    CustomerProductId customerProductId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("customerId")
+//    @MapsId("customer_id")
     private Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("productId")
+//    @MapsId("product_id")
     private Product product;
 
     @Column(name = "price")
     private Integer price;
+
+    public CustomerProduct(Customer customer, Product product, Integer price) {
+        this.customer = customer;
+        this.product = product;
+        this.price = price;
+    }
+
+    public CustomerProduct() {
+    }
 }

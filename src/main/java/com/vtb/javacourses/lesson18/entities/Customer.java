@@ -1,12 +1,14 @@
 package com.vtb.javacourses.lesson18.entities;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@ToString
 @Entity
 @Table(name = "customers")
 public class Customer {
@@ -25,14 +27,20 @@ public class Customer {
 //            joinColumns = @JoinColumn(name = "customers_id"),
 //            inverseJoinColumns = @JoinColumn(name = "products_id")
 //    )
+
     @OneToMany(
             mappedBy = "customer",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<Product> products = new ArrayList<>();
+    private List<CustomerProduct> customerProducts = new ArrayList<>();
+
+//    private List<Product> products = new ArrayList<>();
 
     public Customer(String name) {
         this.name = name;
+    }
+
+    public Customer() {
     }
 }

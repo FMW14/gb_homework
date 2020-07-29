@@ -27,15 +27,19 @@ public class Product {
 //            joinColumns = @JoinColumn(name = "products_id"),
 //            inverseJoinColumns = @JoinColumn(name = "customers_id")
 //    )
+
     @OneToMany(
-            mappedBy = "customer",
+            mappedBy = "product",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<CustomerProduct> customers = new ArrayList<>();
+    private List<CustomerProduct> customerProducts = new ArrayList<>();
 
     public Product(String name, Integer price) {
         this.name = name;
         this.price = price;
+    }
+
+    public Product() {
     }
 }
