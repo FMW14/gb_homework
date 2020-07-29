@@ -16,23 +16,13 @@ public class Main {
         PrepareData.forcePrepareData();
         CustomerRepo customerRepo = new CustomerRepo();
         ProductRepo productRepo = new ProductRepo();
-//        CustomerProductRepo
 
         List<CustomerProduct> customerProducts1 = new ArrayList<>();
 
         Customer customer1 = new Customer("Bob");
-
         customerRepo.save(customer1);
-//        customerRepo.getById(2L);
-//        customerRepo.getByName("Bob");
 
         Product product1 = new Product("prod1", 100);
-//        productRepo.save(product1);
-//        productRepo.getById(1L);
-//        productRepo.getByName("prod1");
-//        productRepo.deleteById(1L);
-//        productRepo.deleteByName("prod1");
-
         customerProducts1.add(new CustomerProduct(customer1, product1));
         customer1.setCustomerProducts(customerProducts1);
         customerRepo.save(customer1);
@@ -121,16 +111,6 @@ public class Main {
         } catch (NullPointerException e){
             e.printStackTrace();
         }
-
-
-//        if (product.getCustomerProducts() != null || !product.getCustomerProducts().isEmpty()) {
-//            for (CustomerProduct cp : product.getCustomerProducts()) {
-//                System.out.println(cp.getCustomer().getName());
-//            }
-//        } else {
-//            System.out.println("Product has no customers");
-//        }
-
     }
 
     public static void deleteProductByName(String name){
@@ -148,7 +128,8 @@ public class Main {
         CustomerRepo customerRepo = new CustomerRepo();
 
         Customer customer = customerRepo.getById(customerId);
-        customer.getCustomerProducts().add(new CustomerProduct(customer, productRepo.getById(productId)));
+        customer.addProduct(productRepo.getById(productId));
+//        customer.getCustomerProducts().add(new CustomerProduct(customer, productRepo.getById(productId)));
         customerRepo.save(customer);
     }
 }

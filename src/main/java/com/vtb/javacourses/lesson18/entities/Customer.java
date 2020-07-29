@@ -44,4 +44,8 @@ public class Customer {
 
     public Customer() {
     }
+
+    public void addProduct(Product newProduct){
+        this.customerProducts.add( new CustomerProduct(this, newProduct));
+    }
 }
