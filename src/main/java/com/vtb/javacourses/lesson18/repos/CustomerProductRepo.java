@@ -1,6 +1,6 @@
 package com.vtb.javacourses.lesson18.repos;
 
-import com.vtb.javacourses.lesson18.HibernateUtil;
+import com.vtb.javacourses.lesson18.utils.HibernateUtil;
 import com.vtb.javacourses.lesson18.entities.Customer;
 import com.vtb.javacourses.lesson18.entities.CustomerProduct;
 import org.hibernate.Session;

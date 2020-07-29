@@ -1,4 +1,4 @@
-package com.vtb.javacourses.lesson18;
+package com.vtb.javacourses.lesson18.utils;
 
 import org.hibernate.Session;
 
