@@ -15,7 +15,7 @@ public class ProductRepo {
             session = HibernateUtil.getSession();
             session.beginTransaction();
             customerFromDb = session.get(Product.class, id);
-            System.out.println(customerFromDb);
+//            System.out.println(customerFromDb);
 
             session.getTransaction().commit();
 
@@ -41,7 +41,7 @@ public class ProductRepo {
 
             productFromDb = (Product) query.uniqueResult();
 
-            System.out.println(productFromDb);
+//            System.out.println(productFromDb);
 
             session.getTransaction().commit();
 
@@ -60,30 +60,10 @@ public class ProductRepo {
         try {
             session = HibernateUtil.getSession();
             session.beginTransaction();
-            session.save(product);
-//            University university = session.get(University.class, 1L);
-
-
-//            System.out.println(university);
-//            System.out.println("Students: ");
-//            for (Student s : university.getStudents()) {
-//                System.out.println(s.getName());
-//            }
-
-//            Student student = new Student("Zahar", university);
-//            session.save(student);
-//            university.getStudents().add(student);
+            session.saveOrUpdate(product);
             session.getTransaction().commit();
 
-//            session = factory.getCurrentSession();
-//            session.beginTransaction();
-//            University universityFetch = (University)session.getNamedQuery("withStudents")
-//                    .setParameter("id", 2L)
-//                    .getSingleResult();
-//            session.getTransaction().commit();
-//            System.out.println(universityFetch.getStudents());
         } finally {
-//            factory.close();
             if (session != null) {
                 session.close();
             }

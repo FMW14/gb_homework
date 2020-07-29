@@ -15,7 +15,7 @@ public class CustomerRepo {
             session = HibernateUtil.getSession();
             session.beginTransaction();
             customerFromDb = session.get(Customer.class, id);
-            System.out.println(customerFromDb);
+//            System.out.println(customerFromDb);
 
             session.getTransaction().commit();
 
@@ -41,7 +41,7 @@ public class CustomerRepo {
 
             customerFromDb = (Customer) query.uniqueResult();
 
-            System.out.println(customerFromDb);
+//            System.out.println(customerFromDb);
 
             session.getTransaction().commit();
 

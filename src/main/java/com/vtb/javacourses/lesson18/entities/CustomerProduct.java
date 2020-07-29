@@ -22,12 +22,12 @@ public class CustomerProduct {
 //    @EmbeddedId
 //    CustomerProductId customerProductId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
 //    @MapsId("customer_id")
     private Customer customer;
 
     @ManyToOne(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             cascade = CascadeType.ALL
     )
 //    @MapsId("product_id")

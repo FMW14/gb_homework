@@ -8,12 +8,15 @@ import com.vtb.javacourses.lesson18.repos.ProductRepo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         PrepareData.forcePrepareData();
         CustomerRepo customerRepo = new CustomerRepo();
         ProductRepo productRepo = new ProductRepo();
+//        CustomerProductRepo
 
         List<CustomerProduct> customerProducts1 = new ArrayList<>();
 
@@ -41,5 +44,111 @@ public class Main {
 //        customerRepo.getById(3L);
 //        customerRepo.getById(4L);
 
+
+        Scanner scanner = new Scanner(System.in);
+        ScannerParser scannerParser = new ScannerParser();
+        boolean waiting = true;
+        while (waiting) {
+            if (scanner.hasNextLine()) {
+//                int i = scanner.nextInt();
+                String s = scanner.nextLine();
+                Map<String, String> parsedLine = scannerParser.parseLine(s);
+
+                if (parsedLine.get("command").equals("/showProductsByConsumer")) {
+                    printProductsByCustomerName(parsedLine.get("arg1"));
+                }
+
+                if (parsedLine.get("command").equals("/showConsumersByProductTitle")) {
+                    printPCustomersByProductName(parsedLine.get("arg1"));
+                }
+
+                if (parsedLine.get("command").equals("/deleteCustomer")) {
+                    deleteCustomerByName(parsedLine.get("arg1"));
+                }
+
+                if (parsedLine.get("command").equals("/deleteProduct")){
+                    deleteProductByName(parsedLine.get("arg1"));
+                }
+
+                if (parsedLine.get("command").equals("/buy")){
+//                    deleteProductByName(parsedLine.get("arg1"));
+                    buy(Long.parseLong(parsedLine.get("arg1")), Long.parseLong(parsedLine.get("arg2")));
+                }
+
+//                if (s.equals("/showProductsByConsumer")){
+//                    printProductsByCustomerName(s);
+//                }
+
+//                System.out.println(s);
+            } else {
+//                System.out.println("Вы ввели не целое число");
+            }
+        }
+    }
+
+    public static void printProductsByCustomerName(String name) {
+        CustomerRepo customerRepo = new CustomerRepo();
+//        name = "Bob";
+        Customer customer = customerRepo.getByName(name);
+
+        if (customer.getCustomerProducts() != null || !customer.getCustomerProducts().isEmpty()) {
+            for (CustomerProduct cp : customer.getCustomerProducts()) {
+                System.out.println(cp.getProduct().getName());
+            }
+        } else {
+            System.out.println("Customer has no products");
+        }
+
+    }
+
+    public static void printPCustomersByProductName(String name) {
+//        CustomerRepo customerRepo = new CustomerRepo();
+        ProductRepo productRepo = new ProductRepo();
+//        name = "Bob";
+        Product product = productRepo.getByName(name);
+//        Customer customer = customerRepo.getByName(name);
+
+        try{
+            if(product.getCustomerProducts().isEmpty()){
+//                System.out.println(123445);
+                throw new NullPointerException("No customers"); //TODO exc
+            } else {
+                for (CustomerProduct cp : product.getCustomerProducts()) {
+                    System.out.println(cp.getCustomer().getName());
+                }
+            }
+
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
+
+//        if (product.getCustomerProducts() != null || !product.getCustomerProducts().isEmpty()) {
+//            for (CustomerProduct cp : product.getCustomerProducts()) {
+//                System.out.println(cp.getCustomer().getName());
+//            }
+//        } else {
+//            System.out.println("Product has no customers");
+//        }
+
+    }
+
+    public static void deleteProductByName(String name){
+        ProductRepo productRepo = new ProductRepo();
+        productRepo.deleteByName(name);
+    }
+
+    public static void deleteCustomerByName(String name){
+        CustomerRepo customerRepo = new CustomerRepo();
+        customerRepo.deleteByName(name);
+    }
+
+    public static void buy(Long customerId, Long productId){
+        ProductRepo productRepo = new ProductRepo();
+        CustomerRepo customerRepo = new CustomerRepo();
+
+        Customer customer = customerRepo.getById(customerId);
+        customer.getCustomerProducts().add(new CustomerProduct(customer, productRepo.getById(productId)));
+        customerRepo.save(customer);
     }
 }

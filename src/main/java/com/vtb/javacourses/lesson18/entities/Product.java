@@ -33,7 +33,8 @@ public class Product {
     @OneToMany(
             mappedBy = "product",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private List<CustomerProduct> customerProducts = new ArrayList<>();
 

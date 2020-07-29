@@ -31,7 +31,8 @@ public class Customer {
     @OneToMany(
             mappedBy = "customer",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private List<CustomerProduct> customerProducts = new ArrayList<>();
 
