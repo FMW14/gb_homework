@@ -1,12 +1,16 @@
 package com.vtb.javacourses.lesson18.repos;
 
-import com.vtb.javacourses.lesson18.utils.HibernateUtil;
 import com.vtb.javacourses.lesson18.entities.Product;
+import com.vtb.javacourses.lesson18.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 public class ProductRepo {
     public Product getById(Long id) {
+
+        if (id == null) {
+            throw new NullPointerException();
+        }
 
         Session session = null;
         Product customerFromDb;
@@ -26,6 +30,10 @@ public class ProductRepo {
     }
 
     public Product getByName(String name) {
+        if (name == null) {
+            throw new NullPointerException();
+        }
+
         Session session = null;
         Product productFromDb;
 
@@ -48,6 +56,11 @@ public class ProductRepo {
     }
 
     public void save(Product product) {
+
+        if (product == null) {
+            throw new NullPointerException();
+        }
+
         Session session = null;
 
         try {
@@ -63,6 +76,10 @@ public class ProductRepo {
     }
 
     public void deleteById(Long id) {
+        if (id == null) {
+            throw new NullPointerException();
+        }
+
         Session session = null;
         Product productFromDb;
 
@@ -80,6 +97,11 @@ public class ProductRepo {
     }
 
     public void deleteByName(String name) {
+
+        if (name == null) {
+            throw new NullPointerException();
+        }
+
         Session session = null;
         Product productFromDb;
 
@@ -90,10 +112,11 @@ public class ProductRepo {
                     createQuery("from Product where name=:name");
             query.setParameter("name", name);
             productFromDb = (Product) query.uniqueResult();
-            session.delete(productFromDb);
-
-//            System.out.println(productFromDb);
-
+            if (productFromDb != null) {
+                session.delete(productFromDb);
+            } else {
+                throw new NullPointerException("Product not found");
+            }
             session.getTransaction().commit();
 
         } finally {

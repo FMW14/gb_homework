@@ -8,6 +8,10 @@ import org.hibernate.query.Query;
 public class CustomerRepo {
     public Customer getById(Long id) {
 
+        if (id == null) {
+            throw new NullPointerException();
+        }
+
         Session session = null;
         Customer customerFromDb;
 
@@ -27,6 +31,11 @@ public class CustomerRepo {
     }
 
     public Customer getByName(String name) {
+
+        if (name == null) {
+            throw new NullPointerException();
+        }
+
         Session session = null;
         Customer customerFromDb;
 
@@ -50,11 +59,11 @@ public class CustomerRepo {
     }
 
     public void save(Customer customer) {
-        Session session = null;
-
-        if (customer == null){
-            return;
+        if (customer == null) {
+            throw new NullPointerException();
         }
+
+        Session session = null;
 
         try {
             session = HibernateUtil.getSession();
@@ -72,6 +81,10 @@ public class CustomerRepo {
     }
 
     public void deleteById(Long id) {
+        if (id == null) {
+            throw new NullPointerException();
+        }
+
         Session session = null;
         Customer customerFromDb;
 
@@ -92,6 +105,11 @@ public class CustomerRepo {
     }
 
     public void deleteByName(String name) {
+
+        if (name == null) {
+            throw new NullPointerException();
+        }
+
         Session session = null;
         Customer customerFromDb;
 
@@ -103,7 +121,12 @@ public class CustomerRepo {
 //            customerFromDb = (Customer) query.uniqueResult();
 //
             customerFromDb = getByName(name);
-            session.delete(customerFromDb);
+            if (customerFromDb != null) {
+                session.delete(customerFromDb);
+            } else {
+                throw new NullPointerException("Customer not found");
+            }
+
             session.getTransaction().commit();
 
         } finally {
