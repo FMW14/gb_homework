@@ -14,3 +14,4 @@ INSERT INTO products (name, price) VALUES
 
 DROP TABLE IF EXISTS customer_product CASCADE;
 CREATE TABLE customer_product (id bigserial PRIMARY KEY, customer_id bigint references customers (id), product_id bigint references products (id), price int);
+COMMIT;
