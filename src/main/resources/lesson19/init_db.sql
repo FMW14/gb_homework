@@ -1,17 +1,16 @@
 BEGIN;
 
---DROP TABLE IF EXISTS customers CASCADE;
---CREATE TABLE customers (id bigserial PRIMARY KEY, name VARCHAR(255));
---INSERT INTO customers (name) VALUES
---('name1'), ('name2'), ('name3');
---
---DROP TABLE IF EXISTS products CASCADE;
---CREATE TABLE products (id bigserial PRIMARY KEY, name VARCHAR(255), price int);
---INSERT INTO products (name, price) VALUES
---('box1', 100),
---('box2', 200),
---('box3', 300);
+DROP TABLE IF EXISTS users CASCADE;
+CREATE TABLE users (id bigserial PRIMARY KEY, name VARCHAR(255));
+INSERT INTO users (name) VALUES
+('user1'), ('user2'), ('user3'), ('user4'), ('user5'), ('user6'), ('user7'), ('user8');
 
---DROP TABLE IF EXISTS customer_product CASCADE;
---CREATE TABLE customer_product (id bigserial PRIMARY KEY, customer_id bigint references customers (id), product_id bigint references products (id), price int);
+DROP TABLE IF EXISTS lots CASCADE;
+CREATE TABLE lots(id bigserial PRIMARY KEY, name VARCHAR(255), bet int, user_id bigint references users (id));
+INSERT INTO lots (name, bet) VALUES
+('lot1', 0),
+('lot2', 0),
+('lot3', 0),
+('lot4', 0);
+
 COMMIT;

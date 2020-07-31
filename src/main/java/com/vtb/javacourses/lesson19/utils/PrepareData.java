@@ -11,10 +11,10 @@ public class PrepareData {
     public static void forcePrepareData() {
         Session session = HibernateUtil.getSession();
         try {
-            System.out.println("file init = " + Files.exists(Paths.get("src/main/resources/lesson19/init_db.sql")));
-            System.out.println("start parse init_db");
-            String sql = Files.lines(Paths.get("src/main/resources/lesson10/init_db.sql")).collect(Collectors.joining(" "));
-            System.out.println("end parse init_db");
+//            System.out.println("file init = " + Files.exists(Paths.get("src/main/resources/lesson19/init_db.sql")));
+//            System.out.println("start parse init_db");
+            String sql = Files.lines(Paths.get("src/main/resources/lesson19/init_db.sql")).collect(Collectors.joining(" "));
+//            System.out.println("end parse init_db");
             session.beginTransaction();
             session.createNativeQuery(sql).executeUpdate();
             session.getTransaction().commit();
