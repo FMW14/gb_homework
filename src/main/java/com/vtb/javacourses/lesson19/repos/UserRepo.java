@@ -1,25 +1,25 @@
 package com.vtb.javacourses.lesson19.repos;
 
-import com.vtb.javacourses.lesson19.entities.Lot;
+import com.vtb.javacourses.lesson19.entities.User;
 import com.vtb.javacourses.lesson19.utils.HibernateUtil;
 import org.hibernate.Session;
 
 import java.util.List;
 
-public class LotRepo {
-    public Lot getById(Long id) {
+public class UserRepo {
+    public User getById(Long id) {
 
         if (id == null) {
             throw new NullPointerException();
         }
 
         Session session = null;
-        Lot lotFromDb;
+        User userFromDb;
 
         try {
             session = HibernateUtil.getSession();
             session.beginTransaction();
-            lotFromDb = session.get(Lot.class, id);
+            userFromDb = session.get(User.class, id);
             session.getTransaction().commit();
 
         } finally {
@@ -28,17 +28,17 @@ public class LotRepo {
             }
         }
 
-        return lotFromDb;
+        return userFromDb;
     }
 
-    public List<Lot> getAll() {
+    public List<User> getAll() {
         Session session = null;
-        List<Lot> lotList;
+        List<User> userList;
 
         try {
             session = HibernateUtil.getSession();
             session.beginTransaction();
-            lotList = HibernateUtil.getSession().createQuery("from Lot").list();
+            userList = HibernateUtil.getSession().createQuery("from User").list();
             session.getTransaction().commit();
         } finally {
             if (session != null) {
@@ -46,27 +46,6 @@ public class LotRepo {
             }
         }
 
-        return lotList;
+        return userList;
     }
-
-    public void save(Lot lot) {
-
-        if (lot == null) {
-            throw new NullPointerException();
-        }
-
-        Session session = null;
-
-        try {
-            session = HibernateUtil.getSession();
-            session.beginTransaction();
-            session.saveOrUpdate(lot);
-            session.getTransaction().commit();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-    }
-
 }
