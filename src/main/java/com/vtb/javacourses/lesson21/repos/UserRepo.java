@@ -3,11 +3,13 @@ package com.vtb.javacourses.lesson21.repos;
 import com.vtb.javacourses.lesson21.entities.User;
 import com.vtb.javacourses.lesson21.util.HibernateUtil;
 import org.hibernate.Session;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@Scope("singleton") //prototype
 public class UserRepo {
     public User getById(Long id) {
 

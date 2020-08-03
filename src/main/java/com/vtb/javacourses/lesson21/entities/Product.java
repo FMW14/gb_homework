@@ -2,13 +2,15 @@ package com.vtb.javacourses.lesson21.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
+@ToString
 @Entity
-@Table(name = "price")
+@Table(name = "products")
 public class Product {
     @Id
     @Column(name = "id")

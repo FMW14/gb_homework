@@ -7,7 +7,7 @@ INSERT INTO users (name, age) VALUES
 
 DROP TABLE IF EXISTS products CASCADE;
 CREATE TABLE products(id bigserial PRIMARY KEY, name VARCHAR(255), price int);
-INSERT INTO lots (name, price) VALUES
+INSERT INTO products (name, price) VALUES
 ('item1', 100),
 ('item2', 200),
 ('item3', 300),

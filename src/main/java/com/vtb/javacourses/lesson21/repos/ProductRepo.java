@@ -3,11 +3,13 @@ package com.vtb.javacourses.lesson21.repos;
 import com.vtb.javacourses.lesson21.entities.Product;
 import com.vtb.javacourses.lesson21.util.HibernateUtil;
 import org.hibernate.Session;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@Scope("singleton")
 public class ProductRepo {
     public Product getById(Long id) {
 
@@ -40,7 +42,7 @@ public class ProductRepo {
         try {
             session = HibernateUtil.getSession();
             session.beginTransaction();
-            productList = HibernateUtil.getSession().createQuery("from User").list();
+            productList = HibernateUtil.getSession().createQuery("from Product").list();
             session.getTransaction().commit();
         } finally {
             if (session != null) {
