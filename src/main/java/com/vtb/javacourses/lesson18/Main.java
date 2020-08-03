@@ -28,7 +28,12 @@ public class Main {
         customerRepo.save(customer1);
 
 //        customerRepo.deleteByName("Bob");
-
+        // TODO: 03.08.2020 работа над ошибками
+        //  убрать NPE,
+        //  убрать логику из мейн в сервисы,
+        //  чет сделать с кастомерПродуктРепо (не особо нужен),
+        //  не создавать репозитории каждый раз
+        //  убрать жадную загрузку
 
         Scanner scanner = new Scanner(System.in);
         ScannerParser scannerParser = new ScannerParser();

@@ -1,6 +1,7 @@
 package com.vtb.javacourses.lesson18.entities;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Data
 @ToString
+@NoArgsConstructor
 @Entity
 @Table(name = "products")
 public class Product {
@@ -34,8 +36,5 @@ public class Product {
     public Product(String name, Integer price) {
         this.name = name;
         this.price = price;
-    }
-
-    public Product() {
     }
 }
