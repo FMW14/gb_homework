@@ -19,7 +19,7 @@ public class HibernateUtil {
 
     public static void loadSessionFactory() {
         sessionFactory = new Configuration()
-                .configure("lesson19/configs/hibernate.cfg.xml")
+                .configure("lesson21/configs/hibernate.cfg.xml")
                 .buildSessionFactory();
     }
 
@@ -28,9 +28,10 @@ public class HibernateUtil {
         Session retSession = null;
         try {
             retSession = sessionFactory.openSession();
-        } catch (Throwable t) {
+        } catch (Exception e) {
             System.err.println("Exception while getting session.. ");
-            t.printStackTrace();
+            e.printStackTrace();
+            // TODO: 03.08.2020 something 
         }
         if (retSession == null) {
             System.err.println("Session is discovered null");
