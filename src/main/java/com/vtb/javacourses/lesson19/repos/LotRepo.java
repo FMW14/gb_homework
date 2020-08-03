@@ -10,7 +10,7 @@ public class LotRepo {
     public Lot getById(Long id) {
 
         if (id == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         }
 
         Session session = null;
@@ -52,7 +52,7 @@ public class LotRepo {
     public void save(Lot lot) {
 
         if (lot == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         }
 
         Session session = null;

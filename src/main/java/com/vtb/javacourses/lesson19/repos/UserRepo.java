@@ -10,7 +10,7 @@ public class UserRepo {
     public User getById(Long id) {
 
         if (id == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         }
 
         Session session = null;
