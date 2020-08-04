@@ -2,15 +2,21 @@ package com.vtb.javacourses.lesson21.repos;
 
 import com.vtb.javacourses.lesson21.entities.User;
 import com.vtb.javacourses.lesson21.util.HibernateUtil;
+import lombok.AllArgsConstructor;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Component
 @Scope("singleton") //prototype
 public class UserRepo {
+    @Autowired
+    private HibernateUtil hibernateUtil;
+
     public User getById(Long id) {
 
         if (id == null) {
@@ -21,7 +27,7 @@ public class UserRepo {
         User userFromDb;
 
         try {
-            session = HibernateUtil.getSession();
+            session = hibernateUtil.getSession();
             session.beginTransaction();
             userFromDb = session.get(User.class, id);
             session.getTransaction().commit();
@@ -40,9 +46,9 @@ public class UserRepo {
         List<User> userList;
 
         try {
-            session = HibernateUtil.getSession();
+            session = hibernateUtil.getSession();
             session.beginTransaction();
-            userList = HibernateUtil.getSession().createQuery("from User").list();
+            userList = hibernateUtil.getSession().createQuery("from User").list();
             session.getTransaction().commit();
         } finally {
             if (session != null) {
@@ -62,7 +68,7 @@ public class UserRepo {
         Session session = null;
 
         try {
-            session = HibernateUtil.getSession();
+            session = hibernateUtil.getSession();
             session.beginTransaction();
             session.saveOrUpdate(user);
             session.getTransaction().commit();

@@ -2,15 +2,21 @@ package com.vtb.javacourses.lesson21.repos;
 
 import com.vtb.javacourses.lesson21.entities.Product;
 import com.vtb.javacourses.lesson21.util.HibernateUtil;
+import lombok.AllArgsConstructor;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Component
 @Scope("singleton")
 public class ProductRepo {
+    @Autowired
+    private HibernateUtil hibernateUtil;
+
     public Product getById(Long id) {
 
         if (id == null) {
@@ -21,7 +27,7 @@ public class ProductRepo {
         Product productFromDb;
 
         try {
-            session = HibernateUtil.getSession();
+            session = hibernateUtil.getSession();
             session.beginTransaction();
             productFromDb = session.get(Product.class, id);
             session.getTransaction().commit();
@@ -40,9 +46,9 @@ public class ProductRepo {
         List<Product> productList;
 
         try {
-            session = HibernateUtil.getSession();
+            session = hibernateUtil.getSession();
             session.beginTransaction();
-            productList = HibernateUtil.getSession().createQuery("from Product").list();
+            productList = hibernateUtil.getSession().createQuery("from Product").list();
             session.getTransaction().commit();
         } finally {
             if (session != null) {
@@ -62,7 +68,7 @@ public class ProductRepo {
         Session session = null;
 
         try {
-            session = HibernateUtil.getSession();
+            session = hibernateUtil.getSession();
             session.beginTransaction();
             session.saveOrUpdate(product);
             session.getTransaction().commit();

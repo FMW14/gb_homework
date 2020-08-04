@@ -1,20 +1,32 @@
 package com.vtb.javacourses.lesson21.util;
 
+import lombok.AllArgsConstructor;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
+@Configuration
 public class PrepareData {
-    public static void forcePrepareData() {
-        Session session = HibernateUtil.getSession();
+
+    @Autowired
+    private HibernateUtil hibernateUtil;
+
+    @PostConstruct
+    public void init(){
+        forcePrepareData();
+    }
+
+    public void forcePrepareData() {
+        Session session = hibernateUtil.getSession();
         try {
-//            System.out.println("file init = " + Files.exists(Paths.get("src/main/resources/lesson19/init_db.sql")));
-//            System.out.println("start parse init_db");
             String sql = Files.lines(Paths.get("src/main/resources/lesson21/init_db.sql")).collect(Collectors.joining(" "));
-//            System.out.println("end parse init_db");
             session.beginTransaction();
             session.createNativeQuery(sql).executeUpdate();
             session.getTransaction().commit();
